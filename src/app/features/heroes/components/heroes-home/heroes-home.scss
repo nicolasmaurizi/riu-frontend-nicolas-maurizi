@@ -1,0 +1,151 @@
+:host {
+  display: block;
+}
+
+.heroes-home {
+  display: grid;
+  gap: 28px;
+}
+
+.heroes-home__header {
+  display: grid;
+  gap: 24px;
+  align-items: end;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+  padding: 32px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 22px 46px rgba(15, 23, 42, 0.08);
+}
+
+.heroes-home__eyebrow {
+  margin: 0 0 8px;
+  color: #c62828;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.heroes-home__title {
+  margin: 0;
+  color: #172033;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.05;
+}
+
+.heroes-home__subtitle {
+  margin: 12px 0 0;
+  max-width: 56ch;
+  color: #586277;
+  font-size: 1rem;
+}
+
+.heroes-home__search {
+  width: 100%;
+}
+
+.heroes-home__intro {
+  min-width: 0;
+}
+
+.heroes-home__table-card {
+  display: grid;
+  gap: 20px;
+  padding: 24px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 22px 46px rgba(15, 23, 42, 0.08);
+}
+
+.heroes-home__table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.heroes-home__section-title {
+  margin: 0;
+  color: #172033;
+  font-size: 1.4rem;
+}
+
+.heroes-home__section-copy {
+  margin: 6px 0 0;
+  color: #586277;
+}
+
+.heroes-home__table-wrap {
+  overflow-x: auto;
+}
+
+.heroes-home__table {
+  width: 100%;
+  min-width: 760px;
+}
+
+.heroes-home__avatar {
+  display: block;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  object-fit: cover;
+  background: #d7dce5;
+}
+
+.heroes-home__name-cell {
+  display: grid;
+  gap: 4px;
+}
+
+.heroes-home__name {
+  font-weight: 600;
+  color: #172033;
+}
+
+.heroes-home__name-detail {
+  color: #6b7486;
+  font-size: 0.875rem;
+}
+
+.heroes-home__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.heroes-home__actions-column {
+  text-align: right;
+}
+
+th.mat-mdc-header-cell {
+  color: #172033;
+  font-weight: 700;
+}
+
+td.mat-mdc-cell,
+th.mat-mdc-header-cell {
+  padding-block: 14px;
+}
+
+mat-paginator {
+  border-top: 1px solid rgba(23, 32, 51, 0.08);
+}
+
+@media (max-width: 720px) {
+  .heroes-home__header {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+
+  .heroes-home__table-card {
+    padding: 20px;
+  }
+
+  .heroes-home__table-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

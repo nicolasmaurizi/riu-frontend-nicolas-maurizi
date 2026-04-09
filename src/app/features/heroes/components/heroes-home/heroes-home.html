@@ -1,0 +1,87 @@
+<section class="heroes-home">
+  <header class="heroes-home__header">
+    <div class="heroes-home__intro">
+      <p class="heroes-home__eyebrow">Superhero directory</p>
+      <h1 class="heroes-home__title">Explore iconic heroes</h1>
+      <p class="heroes-home__subtitle">
+        Una vista inicial paginada para validar estructura, acciones y componentes base.
+      </p>
+    </div>
+
+    <mat-form-field class="heroes-home__search" appearance="outline">
+      <mat-label>Search heroes</mat-label>
+      <input matInput placeholder="Spider-Man, Batman..." />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </header>
+
+  <section class="heroes-home__table-card">
+    <div class="heroes-home__table-header">
+      <div>
+        <h2 class="heroes-home__section-title">Heroes</h2>
+        <p class="heroes-home__section-copy">Listado mock usando `INITIAL_HEROES` como fuente.</p>
+      </div>
+
+      <button mat-flat-button type="button" (click)="onAddHero()">
+        <mat-icon>add</mat-icon>
+        Add
+      </button>
+    </div>
+
+    <div class="heroes-home__table-wrap">
+      <table mat-table [dataSource]="pagedHeroes()" class="heroes-home__table">
+        <ng-container matColumnDef="image">
+          <th mat-header-cell *matHeaderCellDef>Image</th>
+          <td mat-cell *matCellDef="let hero">
+            <img class="heroes-home__avatar" [src]="hero.imageUrl" [alt]="hero.name" />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let hero">
+            <div class="heroes-home__name-cell">
+              <span class="heroes-home__name">{{ hero.alias || hero.name }}</span>
+              @if (hero.alias) {
+                <span class="heroes-home__name-detail">{{ hero.name }}</span>
+              }
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="publisher">
+          <th mat-header-cell *matHeaderCellDef>Publisher</th>
+          <td mat-cell *matCellDef="let hero">{{ hero.publisher }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="alignment">
+          <th mat-header-cell *matHeaderCellDef>Alignment</th>
+          <td mat-cell *matCellDef="let hero">{{ hero.alignment }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="heroes-home__actions-column">Actions</th>
+          <td mat-cell *matCellDef="let hero" class="heroes-home__actions-column">
+            <div class="heroes-home__actions">
+              <button mat-stroked-button type="button" (click)="onAddHero(hero)">Add</button>
+              <button mat-stroked-button type="button" (click)="onEditHero(hero)">Edit</button>
+              <button mat-stroked-button type="button" (click)="onDeleteHero(hero)">Delete</button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+
+    <mat-paginator
+      [length]="totalHeroes"
+      [pageIndex]="pageIndex()"
+      [pageSize]="pageSize()"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChange($event)"
+      aria-label="Heroes pagination"
+    />
+  </section>
+</section>
