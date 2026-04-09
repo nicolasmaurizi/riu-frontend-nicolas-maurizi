@@ -1,7 +1,9 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
 
 import { HeroFormValue } from '../models/hero-form.model';
 import { Hero } from '../models/hero.model';
+
+const HEROES_STORAGE_KEY = 'heroes-app.heroes';
 
 const INITIAL_HEROES: Hero[] = [
   {
@@ -58,8 +60,11 @@ const INITIAL_HEROES: Hero[] = [
   providedIn: 'root',
 })
 export class HeroesService {
-  private readonly heroesState: WritableSignal<Hero[]> = signal(INITIAL_HEROES);
-  private nextId = INITIAL_HEROES.reduce((maxId, hero) => Math.max(maxId, hero.id), 0) + 1;
+  private readonly heroesState: WritableSignal<Hero[]> = signal(this.loadInitialHeroes());
+
+  readonly heroes: Signal<Hero[]> = computed(() => this.heroesState());
+
+  private nextId = this.calculateNextId(this.heroesState());
 
   getAll(): Hero[] {
     return this.heroesState();
@@ -73,14 +78,18 @@ export class HeroesService {
     const normalizedTerm = term.trim().toLowerCase();
 
     if (!normalizedTerm) {
-      return this.getAll();
+      return this.heroesState();
     }
 
-    return this.heroesState().filter((hero) => hero.name.toLowerCase().includes(normalizedTerm));
+    return this.heroesState().filter((hero) =>
+      hero.name.toLowerCase().includes(normalizedTerm) ||
+      hero.alias?.toLowerCase().includes(normalizedTerm),
+    );
   }
 
   create(payload: HeroFormValue): Hero {
     const timestamp = new Date().toISOString();
+
     const hero: Hero = {
       id: this.nextId++,
       name: payload.name.trim(),
@@ -94,7 +103,11 @@ export class HeroesService {
       updatedAt: timestamp,
     };
 
-    this.heroesState.update((heroes) => [...heroes, hero]);
+    this.heroesState.update((heroes) => {
+      const updatedHeroes = [...heroes, hero];
+      this.persistHeroes(updatedHeroes);
+      return updatedHeroes;
+    });
 
     return hero;
   }
@@ -118,23 +131,74 @@ export class HeroesService {
       updatedAt: new Date().toISOString(),
     };
 
-    this.heroesState.update((heroes) =>
-      heroes.map((hero) => (hero.id === id ? updatedHero : hero)),
-    );
+    this.heroesState.update((heroes) => {
+      const updatedHeroes = heroes.map((hero) => (hero.id === id ? updatedHero : hero));
+      this.persistHeroes(updatedHeroes);
+      return updatedHeroes;
+    });
 
     return updatedHero;
   }
 
   delete(id: number): boolean {
-    const heroes = this.heroesState();
-    const exists = heroes.some((hero) => hero.id === id);
+    const currentHeroes = this.heroesState();
+    const exists = currentHeroes.some((hero) => hero.id === id);
 
     if (!exists) {
       return false;
     }
 
-    this.heroesState.update((currentHeroes) => currentHeroes.filter((hero) => hero.id !== id));
+    this.heroesState.update((heroes) => {
+      const updatedHeroes = heroes.filter((hero) => hero.id !== id);
+      this.persistHeroes(updatedHeroes);
+      return updatedHeroes;
+    });
 
     return true;
+  }
+
+  reset(): void {
+    this.heroesState.set(INITIAL_HEROES);
+    this.persistHeroes(INITIAL_HEROES);
+    this.nextId = this.calculateNextId(INITIAL_HEROES);
+  }
+
+  private loadInitialHeroes(): Hero[] {
+    if (typeof window === 'undefined') {
+      return INITIAL_HEROES;
+    }
+
+    const storedHeroes = localStorage.getItem(HEROES_STORAGE_KEY);
+
+    if (!storedHeroes) {
+      localStorage.setItem(HEROES_STORAGE_KEY, JSON.stringify(INITIAL_HEROES));
+      return INITIAL_HEROES;
+    }
+
+    try {
+      const parsedHeroes = JSON.parse(storedHeroes) as Hero[];
+
+      if (!Array.isArray(parsedHeroes) || parsedHeroes.length === 0) {
+        localStorage.setItem(HEROES_STORAGE_KEY, JSON.stringify(INITIAL_HEROES));
+        return INITIAL_HEROES;
+      }
+
+      return parsedHeroes;
+    } catch {
+      localStorage.setItem(HEROES_STORAGE_KEY, JSON.stringify(INITIAL_HEROES));
+      return INITIAL_HEROES;
+    }
+  }
+
+  private persistHeroes(heroes: Hero[]): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    localStorage.setItem(HEROES_STORAGE_KEY, JSON.stringify(heroes));
+  }
+
+  private calculateNextId(heroes: Hero[]): number {
+    return heroes.reduce((maxId, hero) => Math.max(maxId, hero.id), 0) + 1;
   }
 }
