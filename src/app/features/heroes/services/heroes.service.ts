@@ -5,7 +5,7 @@ import { Hero } from '../models/hero.model';
 
 const HEROES_STORAGE_KEY = 'heroes-app.heroes';
 
-const INITIAL_HEROES: Hero[] = [
+export const INITIAL_HEROES: Hero[] = [
   {
     id: 1,
     name: 'Peter Parker',
