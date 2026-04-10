@@ -37,3 +37,23 @@ body {
   height: 100%;
 }
 /* You can add global styles to this file, and also import other style files */
+
+.notification-snackbar .mdc-snackbar__surface {
+  color: #fff !important;
+}
+
+.notification-snackbar .mat-mdc-snack-bar-action {
+  color: #fff !important;
+}
+
+.notification-snackbar--success .mdc-snackbar__surface {
+  background-color: #4caf50 !important;
+}
+
+.notification-snackbar--error .mdc-snackbar__surface {
+  background-color: #f44336 !important;
+}
+
+.notification-snackbar--info .mdc-snackbar__surface {
+  background-color: #2196f3 !important;
+}
