@@ -50,7 +50,7 @@ export class HeroesHome {
   private readonly heroesService = inject(HeroesService);
   private readonly notification = inject(NotificationService);
 
-  readonly displayedColumns = ['image', 'name', 'publisher', 'alignment', 'power', 'actions'];
+  readonly displayedColumns = ['image', 'name', 'publisher', 'alignment', 'power', 'intelligence', 'actions'];
   readonly pageSizeOptions = [2, 4, 8];
   readonly searchTerm = signal('');
 
@@ -193,15 +193,7 @@ export class HeroesHome {
   }
 
   getPowerTone(powerLevel: number): 'low' | 'medium' | 'high' {
-    if (powerLevel <= 39) {
-      return 'low';
-    }
-
-    if (powerLevel <= 69) {
-      return 'medium';
-    }
-
-    return 'high';
+    return this.getMetricTone(powerLevel);
   }
 
   private syncPageIndexAfterDelete(): void {
@@ -210,5 +202,21 @@ export class HeroesHome {
     if (this.pageIndex() > nextMaxPageIndex) {
       this.pageIndex.set(nextMaxPageIndex);
     }
+  }
+
+  getIntelligenceTone(intelligence: number): 'low' | 'medium' | 'high' {
+    return this.getMetricTone(intelligence);
+  }
+
+  private getMetricTone(value: number): 'low' | 'medium' | 'high' {
+    if (value <= 39) {
+      return 'low';
+    }
+
+    if (value <= 69) {
+      return 'medium';
+    }
+
+    return 'high';
   }
 }

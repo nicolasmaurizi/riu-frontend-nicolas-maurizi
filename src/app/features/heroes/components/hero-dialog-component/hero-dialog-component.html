@@ -67,6 +67,23 @@
         <p class="add-hero-dialog__error">Power level must be at least 10.</p>
       }
     </section>
+
+    <section class="add-hero-dialog__full-width add-hero-dialog__stats">
+      <div class="add-hero-dialog__stats-header">
+        <div>
+          <p class="add-hero-dialog__stats-label">Intelligence</p>
+          <strong class="add-hero-dialog__stats-value">{{ intelligenceScore() }}</strong>
+        </div>
+      </div>
+
+      <mat-slider min="10" max="100" step="1" discrete>
+        <input matSliderThumb formControlName="intelligence" />
+      </mat-slider>
+
+      @if (form.controls.intelligence.touched && form.controls.intelligence.hasError('min')) {
+        <p class="add-hero-dialog__error">Intelligence must be at least 10.</p>
+      }
+    </section>
   </form>
 </mat-dialog-content>
 

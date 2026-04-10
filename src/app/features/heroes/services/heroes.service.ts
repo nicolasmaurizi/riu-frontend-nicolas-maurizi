@@ -113,7 +113,7 @@ export class HeroesService {
       alignment: payload.alignment,
       powerLevel,
       speed: this.calculateSpeedFromPowerLevel(powerLevel),
-      intelligence: payload.intelligence ?? 0,
+      intelligence: payload.intelligence ?? 10,
       createdAt: timestamp,
       updatedAt: timestamp,
     };
@@ -147,7 +147,7 @@ export class HeroesService {
       alignment: payload.alignment,
       powerLevel,
       speed: this.calculateSpeedFromPowerLevel(powerLevel),
-      intelligence: payload.intelligence ?? 0,
+      intelligence: payload.intelligence ?? 10,
       updatedAt: new Date().toISOString(),
     };
 

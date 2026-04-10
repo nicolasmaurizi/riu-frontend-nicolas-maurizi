@@ -7,6 +7,5 @@ export interface HeroFormValue {
   universe: HeroUniverse;
   alignment: HeroAlignment;
   powerLevel: number | null;
-  speed: number | null;
   intelligence: number | null;
 }

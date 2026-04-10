@@ -46,15 +46,20 @@ export class HeroDialogComponent {
     alignment: ['Hero' as HeroAlignment, Validators.required],
     imageUrl: ['', Validators.required],
     powerLevel: [50, [Validators.required, Validators.min(10), Validators.max(100)]],
+    intelligence: [50, [Validators.required, Validators.min(10), Validators.max(100)]],
   });
 
   private readonly powerLevelValue = toSignal(this.form.controls.powerLevel.valueChanges, {
     initialValue: this.form.controls.powerLevel.getRawValue(),
   });
+  private readonly intelligenceValue = toSignal(this.form.controls.intelligence.valueChanges, {
+    initialValue: this.form.controls.intelligence.getRawValue(),
+  });
 
   readonly dialogTitle = computed(() => (this.isEditMode ? 'Edit Hero' : 'Add Hero'));
   readonly submitText = computed(() => (this.isEditMode ? 'Save' : 'Create'));
   readonly derivedSpeed = computed(() => this.calculateSpeed(this.powerLevelValue()));
+  readonly intelligenceScore = computed(() => this.intelligenceValue());
 
   constructor() {
     const hero = this.data;
@@ -70,6 +75,7 @@ export class HeroDialogComponent {
       alignment: hero.alignment,
       imageUrl: hero.imageUrl,
       powerLevel: hero.powerLevel,
+      intelligence: hero.intelligence,
     });
   }
 
@@ -88,8 +94,7 @@ export class HeroDialogComponent {
       universe: value.universe,
       alignment: value.alignment,
       powerLevel: value.powerLevel,
-      speed: null,
-      intelligence: null,
+      intelligence: value.intelligence,
     });
   }
 
