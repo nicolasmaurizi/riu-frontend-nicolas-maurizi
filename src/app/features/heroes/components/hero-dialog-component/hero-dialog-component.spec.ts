@@ -1,9 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { of } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Hero } from '../../models/hero.model';
+import { SuperheroApiService } from '../../services/superhero-api.service';
 import { HeroDialogComponent } from './hero-dialog-component';
 
 describe('HeroDialogComponent', () => {
@@ -25,12 +27,16 @@ describe('HeroDialogComponent', () => {
     const dialogRefMock = {
       close: vi.fn(),
     };
+    const superheroApiServiceMock = {
+      searchHeroImageByName: vi.fn(() => of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [HeroDialogComponent, NoopAnimationsModule],
       providers: [
         { provide: MatDialogRef, useValue: dialogRefMock },
         { provide: MAT_DIALOG_DATA, useValue: data },
+        { provide: SuperheroApiService, useValue: superheroApiServiceMock },
       ],
     }).compileComponents();
 
@@ -40,7 +46,7 @@ describe('HeroDialogComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    return { fixture, component, dialogRefMock };
+    return { fixture, component, dialogRefMock, superheroApiServiceMock };
   };
 
   beforeEach(() => {

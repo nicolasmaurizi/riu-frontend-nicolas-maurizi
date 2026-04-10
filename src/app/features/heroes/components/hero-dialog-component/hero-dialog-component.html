@@ -47,6 +47,33 @@
       }
     </mat-form-field>
 
+    <div class="add-hero-dialog__full-width add-hero-dialog__image-search-status">
+      @if (isSearchingImage()) {
+        <div class="add-hero-dialog__image-search-message" role="status" aria-live="polite">
+          <mat-spinner diameter="18" strokeWidth="3" />
+          <span>Searching image...</span>
+        </div>
+      } @else if (imageSearchError()) {
+        <p class="add-hero-dialog__error">{{ imageSearchError() }}</p>
+      } @else if (imageFound()) {
+        <p class="add-hero-dialog__hint">Image found automatically.</p>
+      }
+    </div>
+
+    <section class="add-hero-dialog__full-width add-hero-dialog__preview">
+      @if (imagePreviewUrl()) {
+        <img
+          class="add-hero-dialog__preview-image"
+          [src]="imagePreviewUrl()"
+          [alt]="form.controls.name.value || 'Hero preview'"
+        />
+      } @else {
+        <div class="add-hero-dialog__preview-placeholder">
+          Image preview will appear here
+        </div>
+      }
+    </section>
+
     <section class="add-hero-dialog__full-width add-hero-dialog__stats">
       <div class="add-hero-dialog__stats-header">
         <div>
