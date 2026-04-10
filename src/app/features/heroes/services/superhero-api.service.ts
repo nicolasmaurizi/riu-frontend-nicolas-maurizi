@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, of, timer } from 'rxjs';
-import { delayWhen, dematerialize, map, materialize, shareReplay } from 'rxjs/operators';
+import { concatMap, dematerialize, map, materialize, shareReplay } from 'rxjs/operators';
 
 interface SuperheroApiImageSet {
   xs?: string;
@@ -60,7 +60,11 @@ export class SuperheroApiService {
 
       return source.pipe(
         materialize(),
-        delayWhen(() => timer(Math.max(0, this.minimumResponseMs - (Date.now() - startedAt)))),
+        concatMap((notification) =>
+          timer(Math.max(0, this.minimumResponseMs - (Date.now() - startedAt))).pipe(
+            map(() => notification),
+          ),
+        ),
         dematerialize(),
       );
     };
