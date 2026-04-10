@@ -1,9 +1,15 @@
-import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { inject, Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
 
 import { HeroFormValue } from '../models/hero-form.model';
 import { Hero } from '../models/hero.model';
+import { HeroesPersistenceService } from './heroes-persistence.service';
 
-const HEROES_STORAGE_KEY = 'heroes-app.heroes';
+export class DuplicateHeroNameError extends Error {
+  constructor() {
+    super('Hero name already exists');
+    this.name = 'DuplicateHeroNameError';
+  }
+}
 
 export const INITIAL_HEROES: Hero[] = [
   {
@@ -12,6 +18,7 @@ export const INITIAL_HEROES: Hero[] = [
     alias: 'Spider-Man',
     imageUrl: 'https://images.unsplash.com/photo-1608889175123-8ee362201f81?auto=format&fit=crop&w=800&q=80',
     universe: 'Marvel',
+    alignment: 'Hero',
     powerLevel: 88,
     speed: 75,
     intelligence: 92,
@@ -24,6 +31,7 @@ export const INITIAL_HEROES: Hero[] = [
     alias: 'Batman',
     imageUrl: 'https://images.unsplash.com/photo-1611605698335-8b1569810432?auto=format&fit=crop&w=800&q=80',
     universe: 'DC',
+    alignment: 'Hero',
     powerLevel: 79,
     speed: 68,
     intelligence: 98,
@@ -36,6 +44,7 @@ export const INITIAL_HEROES: Hero[] = [
     alias: 'Wonder Woman',
     imageUrl: 'https://images.unsplash.com/photo-1544717302-de2939b7ef71?auto=format&fit=crop&w=800&q=80',
     universe: 'DC',
+    alignment: 'Hero',
     powerLevel: 95,
     speed: 84,
     intelligence: 86,
@@ -48,6 +57,7 @@ export const INITIAL_HEROES: Hero[] = [
     alias: 'Iron Man',
     imageUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80',
     universe: 'Marvel',
+    alignment: 'Hero',
     powerLevel: 90,
     speed: 72,
     intelligence: 99,
@@ -60,7 +70,8 @@ export const INITIAL_HEROES: Hero[] = [
   providedIn: 'root',
 })
 export class HeroesService {
-  private readonly heroesState: WritableSignal<Hero[]> = signal(this.loadInitialHeroes());
+  private readonly persistence = inject(HeroesPersistenceService);
+  private readonly heroesState: WritableSignal<Hero[]> = signal(this.persistence.load(INITIAL_HEROES));
 
   readonly heroes: Signal<Hero[]> = computed(() => this.heroesState());
 
@@ -88,7 +99,10 @@ export class HeroesService {
   }
 
   create(payload: HeroFormValue): Hero {
+    this.ensureUniqueHeroName(payload.name);
+
     const timestamp = new Date().toISOString();
+    const powerLevel = payload.powerLevel ?? 0;
 
     const hero: Hero = {
       id: this.nextId++,
@@ -96,16 +110,17 @@ export class HeroesService {
       alias: payload.alias?.trim() || undefined,
       imageUrl: payload.imageUrl.trim(),
       universe: payload.universe,
-      powerLevel: payload.powerLevel ?? 0,
-      speed: payload.speed ?? 0,
+      alignment: payload.alignment,
+      powerLevel,
+      speed: this.calculateSpeedFromPowerLevel(powerLevel),
       intelligence: payload.intelligence ?? 0,
       createdAt: timestamp,
       updatedAt: timestamp,
     };
 
     this.heroesState.update((heroes) => {
-      const updatedHeroes = [...heroes, hero];
-      this.persistHeroes(updatedHeroes);
+      const updatedHeroes = [hero, ...heroes];
+      this.persistence.save(updatedHeroes);
       return updatedHeroes;
     });
 
@@ -119,21 +134,26 @@ export class HeroesService {
       return undefined;
     }
 
+    this.ensureUniqueHeroName(payload.name, id);
+
+    const powerLevel = payload.powerLevel ?? 0;
+
     const updatedHero: Hero = {
       ...currentHero,
       name: payload.name.trim(),
       alias: payload.alias?.trim() || undefined,
       imageUrl: payload.imageUrl.trim(),
       universe: payload.universe,
-      powerLevel: payload.powerLevel ?? 0,
-      speed: payload.speed ?? 0,
+      alignment: payload.alignment,
+      powerLevel,
+      speed: this.calculateSpeedFromPowerLevel(powerLevel),
       intelligence: payload.intelligence ?? 0,
       updatedAt: new Date().toISOString(),
     };
 
     this.heroesState.update((heroes) => {
       const updatedHeroes = heroes.map((hero) => (hero.id === id ? updatedHero : hero));
-      this.persistHeroes(updatedHeroes);
+      this.persistence.save(updatedHeroes);
       return updatedHeroes;
     });
 
@@ -150,7 +170,7 @@ export class HeroesService {
 
     this.heroesState.update((heroes) => {
       const updatedHeroes = heroes.filter((hero) => hero.id !== id);
-      this.persistHeroes(updatedHeroes);
+      this.persistence.save(updatedHeroes);
       return updatedHeroes;
     });
 
@@ -159,46 +179,26 @@ export class HeroesService {
 
   reset(): void {
     this.heroesState.set(INITIAL_HEROES);
-    this.persistHeroes(INITIAL_HEROES);
+    this.persistence.save(INITIAL_HEROES);
     this.nextId = this.calculateNextId(INITIAL_HEROES);
-  }
-
-  private loadInitialHeroes(): Hero[] {
-    if (typeof window === 'undefined') {
-      return INITIAL_HEROES;
-    }
-
-    const storedHeroes = localStorage.getItem(HEROES_STORAGE_KEY);
-
-    if (!storedHeroes) {
-      localStorage.setItem(HEROES_STORAGE_KEY, JSON.stringify(INITIAL_HEROES));
-      return INITIAL_HEROES;
-    }
-
-    try {
-      const parsedHeroes = JSON.parse(storedHeroes) as Hero[];
-
-      if (!Array.isArray(parsedHeroes) || parsedHeroes.length === 0) {
-        localStorage.setItem(HEROES_STORAGE_KEY, JSON.stringify(INITIAL_HEROES));
-        return INITIAL_HEROES;
-      }
-
-      return parsedHeroes;
-    } catch {
-      localStorage.setItem(HEROES_STORAGE_KEY, JSON.stringify(INITIAL_HEROES));
-      return INITIAL_HEROES;
-    }
-  }
-
-  private persistHeroes(heroes: Hero[]): void {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    localStorage.setItem(HEROES_STORAGE_KEY, JSON.stringify(heroes));
   }
 
   private calculateNextId(heroes: Hero[]): number {
     return heroes.reduce((maxId, hero) => Math.max(maxId, hero.id), 0) + 1;
+  }
+
+  private calculateSpeedFromPowerLevel(powerLevel: number): number {
+    return Math.round(powerLevel * 0.85);
+  }
+
+  private ensureUniqueHeroName(name: string, currentHeroId?: number): void {
+    const normalizedName = name.trim().toLowerCase();
+    const hasDuplicate = this.heroesState().some(
+      (hero) => hero.id !== currentHeroId && hero.name.trim().toLowerCase() === normalizedName,
+    );
+
+    if (hasDuplicate) {
+      throw new DuplicateHeroNameError();
+    }
   }
 }
