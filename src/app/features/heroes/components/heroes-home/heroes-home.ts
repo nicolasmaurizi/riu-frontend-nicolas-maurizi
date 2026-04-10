@@ -9,6 +9,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { NotificationService } from '../../../../core/services/notification';
 import {
@@ -36,6 +37,7 @@ interface HeroRow extends Hero {
     MatProgressBarModule,
     MatSnackBarModule,
     MatTableModule,
+    MatTooltipModule,
   ],
   templateUrl: './heroes-home.html',
   styleUrl: './heroes-home.scss',
