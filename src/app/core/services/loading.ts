@@ -1,6 +1,1 @@
-import { Injectable } from '@angular/core';
-
-@Injectable({
-  providedIn: 'root',
-})
-export class Loading {}
+export { LoadingService as Loading } from './loading.service';

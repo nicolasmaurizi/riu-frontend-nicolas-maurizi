@@ -1,1 +1,8 @@
-<p>loading-overlay works!</p>
+@if (loadingService.isLoading()) {
+  <div class="loading-overlay">
+    <div class="loading-overlay__backdrop"></div>
+    <div class="loading-overlay__content" role="status" aria-live="polite">
+      Loading...
+    </div>
+  </div>
+}
