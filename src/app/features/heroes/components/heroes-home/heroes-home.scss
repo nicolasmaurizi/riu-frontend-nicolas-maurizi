@@ -109,6 +109,37 @@
   font-size: 0.875rem;
 }
 
+.heroes-home__power {
+  display: grid;
+  gap: 8px;
+  min-width: 132px;
+}
+
+.heroes-home__power-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.heroes-home__power-meta mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.heroes-home__power--low .heroes-home__power-meta {
+  color: #c62828;
+}
+
+.heroes-home__power--medium .heroes-home__power-meta {
+  color: #ef6c00;
+}
+
+.heroes-home__power--high .heroes-home__power-meta {
+  color: #2e7d32;
+}
+
 .heroes-home__actions {
   display: flex;
   flex-wrap: wrap;
