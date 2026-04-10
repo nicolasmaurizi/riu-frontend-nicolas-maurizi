@@ -14,7 +14,7 @@
 
 <mat-dialog-actions align="end">
   <button mat-button type="button" (click)="cancel()">
-    {{ data.cancelText || 'Cancel' }}
+    {{ data.cancelText || ('common.cancel' | translate) }}
   </button>
   <button
     mat-flat-button
@@ -22,6 +22,6 @@
     (click)="confirm()"
     [color]="data.variant === 'danger' ? 'warn' : 'primary'"
   >
-    {{ data.confirmText || 'Confirm' }}
+    {{ data.confirmText || ('common.confirm' | translate) }}
   </button>
 </mat-dialog-actions>

@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { HeroFormValue } from '../../models/hero-form.model';
 import { Hero, HeroAlignment, HeroUniverse } from '../../models/hero.model';
@@ -28,6 +29,7 @@ import { UppercaseDirective } from '../../../../shared/directives/uppercase.dire
     MatSelectModule,
     MatSliderModule,
     ReactiveFormsModule,
+    TranslatePipe,
     UppercaseDirective,
   ],
   templateUrl: './hero-dialog-component.html',
@@ -69,8 +71,8 @@ export class HeroDialogComponent {
     initialValue: this.form.controls.imageUrl.getRawValue(),
   });
 
-  readonly dialogTitle = computed(() => (this.isEditMode ? 'Edit Hero' : 'Add Hero'));
-  readonly submitText = computed(() => (this.isEditMode ? 'Save' : 'Create'));
+  readonly dialogTitle = computed(() => (this.isEditMode ? 'form.editTitle' : 'form.addTitle'));
+  readonly submitText = computed(() => (this.isEditMode ? 'common.save' : 'common.create'));
   readonly derivedSpeed = computed(() => this.calculateSpeed(this.powerLevelValue()));
   readonly intelligenceScore = computed(() => this.intelligenceValue());
   readonly imagePreviewUrl = computed(() => this.imageUrlValue().trim());
@@ -145,7 +147,7 @@ export class HeroDialogComponent {
           return this.superheroApiService.searchHeroImageByName(name).pipe(
             tap((imageUrl) => this.imageFound.set(Boolean(imageUrl))),
             catchError(() => {
-              this.imageSearchError.set('Could not search image automatically.');
+              this.imageSearchError.set('imageSearch.error');
               return of(null);
             }),
             finalize(() => this.isSearchingImage.set(false)),
@@ -168,5 +170,29 @@ export class HeroDialogComponent {
     const currentImageUrl = this.form.controls.imageUrl.getRawValue().trim();
 
     return !currentImageUrl || currentImageUrl === this.autoFilledImageUrl;
+  }
+
+  getUniverseLabelKey(universe: HeroUniverse): string {
+    if (universe === 'Marvel') {
+      return 'heroes.publisherValues.marvel';
+    }
+
+    if (universe === 'DC') {
+      return 'heroes.publisherValues.dc';
+    }
+
+    return 'heroes.publisherValues.other';
+  }
+
+  getAlignmentLabelKey(alignment: HeroAlignment): string {
+    if (alignment === 'Hero') {
+      return 'heroes.alignmentValues.hero';
+    }
+
+    if (alignment === 'Anti-Hero') {
+      return 'heroes.alignmentValues.antiHero';
+    }
+
+    return 'heroes.alignmentValues.neutral';
   }
 }

@@ -7,6 +7,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { NotificationService } from '../../../../core/services/notification';
 import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
+import { provideTestTranslate } from '../../../../../testing/translate-testing';
 import { HeroFormValue } from '../../models/hero-form.model';
 import { Hero } from '../../models/hero.model';
 import { DuplicateHeroNameError, HeroesService } from '../../services/heroes.service';
@@ -115,6 +116,7 @@ describe('HeroesHome', () => {
     await TestBed.configureTestingModule({
       imports: [HeroesHome, NoopAnimationsModule],
       providers: [
+        provideTestTranslate(),
         { provide: HeroesService, useValue: heroesServiceMock },
         { provide: NotificationService, useValue: notificationServiceMock },
         { provide: MatDialog, useValue: matDialogMock },

@@ -11,6 +11,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginator } from '@angular/material/paginator';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NotificationService } from '../../../../core/services/notification';
 import {
   ConfirmDialog,
@@ -38,6 +39,7 @@ interface HeroRow extends Hero {
     MatSnackBarModule,
     MatTableModule,
     MatTooltipModule,
+    TranslatePipe,
   ],
   templateUrl: './heroes-home.html',
   styleUrl: './heroes-home.scss',
@@ -49,6 +51,7 @@ export class HeroesHome {
   private readonly dialog = inject(MatDialog);
   private readonly heroesService = inject(HeroesService);
   private readonly notification = inject(NotificationService);
+  private readonly translate = inject(TranslateService);
 
   readonly displayedColumns = ['image', 'name', 'publisher', 'alignment', 'power', 'intelligence', 'actions'];
   readonly pageSizeOptions = [2, 4, 8];
@@ -112,14 +115,14 @@ export class HeroesHome {
         try {
           this.heroesService.create(payload);
           this.pageIndex.set(0);
-          this.notification.success('Hero created successfully');
+          this.notification.success(this.translate.instant('heroes.notifications.created'));
         } catch (error) {
           if (error instanceof DuplicateHeroNameError) {
-            this.notification.error('Hero name already exists');
+            this.notification.error(this.translate.instant('heroes.notifications.duplicateName'));
             return;
           }
 
-          this.notification.error('Unable to create hero');
+          this.notification.error(this.translate.instant('heroes.notifications.createError'));
         }
       });
   }
@@ -142,28 +145,30 @@ export class HeroesHome {
           const updatedHero = this.heroesService.update(hero.id, payload);
 
           if (!updatedHero) {
-            this.notification.error('Unable to update hero');
+            this.notification.error(this.translate.instant('heroes.notifications.updateError'));
             return;
           }
 
-          this.notification.success('Hero updated successfully');
+          this.notification.success(this.translate.instant('heroes.notifications.updated'));
         } catch (error) {
           if (error instanceof DuplicateHeroNameError) {
-            this.notification.error('Hero name already exists');
+            this.notification.error(this.translate.instant('heroes.notifications.duplicateName'));
             return;
           }
 
-          this.notification.error('Unable to update hero');
+          this.notification.error(this.translate.instant('heroes.notifications.updateError'));
         }
       });
   }
 
   onDeleteHero(hero: HeroRow): void {
     const dialogData: ConfirmDialogData = {
-      title: 'Delete hero',
-      message: `Are you sure you want to delete ${hero.alias || hero.name}? This action cannot be undone.`,
-      confirmText: 'Delete',
-      cancelText: 'Cancel',
+      title: this.translate.instant('dialog.deleteHeroTitle'),
+      message: this.translate.instant('dialog.deleteHeroMessage', {
+        name: hero.alias || hero.name,
+      }),
+      confirmText: this.translate.instant('dialog.delete'),
+      cancelText: this.translate.instant('common.cancel'),
       variant: 'danger',
     };
 
@@ -183,17 +188,41 @@ export class HeroesHome {
         const wasDeleted = this.heroesService.delete(hero.id);
 
         if (!wasDeleted) {
-          this.notification.error('Unable to delete hero');
+          this.notification.error(this.translate.instant('heroes.notifications.deleteError'));
           return;
         }
 
         this.syncPageIndexAfterDelete();
-        this.notification.success('Hero deleted successfully');
+        this.notification.success(this.translate.instant('heroes.notifications.deleted'));
       });
   }
 
   getPowerTone(powerLevel: number): 'low' | 'medium' | 'high' {
     return this.getMetricTone(powerLevel);
+  }
+
+  getUniverseLabelKey(universe: Hero['universe']): string {
+    if (universe === 'Marvel') {
+      return 'heroes.publisherValues.marvel';
+    }
+
+    if (universe === 'DC') {
+      return 'heroes.publisherValues.dc';
+    }
+
+    return 'heroes.publisherValues.other';
+  }
+
+  getAlignmentLabelKey(alignment: Hero['alignment']): string {
+    if (alignment === 'Hero') {
+      return 'heroes.alignmentValues.hero';
+    }
+
+    if (alignment === 'Anti-Hero') {
+      return 'heroes.alignmentValues.antiHero';
+    }
+
+    return 'heroes.alignmentValues.neutral';
   }
 
   private syncPageIndexAfterDelete(): void {

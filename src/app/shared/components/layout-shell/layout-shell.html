@@ -1,5 +1,18 @@
 <div class="shell">
   <mat-toolbar class="shell__toolbar" color="primary">
+    <span class="shell__brand">{{ 'nav.title' | translate }}</span>
+    <div class="shell__toolbar-spacer"></div>
+    <div class="shell__language-switcher">
+      <span class="shell__language-label">{{ 'nav.language' | translate }}</span>
+      <mat-button-toggle-group
+        [value]="currentLanguage()"
+        (change)="setLanguage($event.value)"
+        aria-label="Language switcher"
+      >
+        <mat-button-toggle value="es">{{ 'nav.spanish' | translate }}</mat-button-toggle>
+        <mat-button-toggle value="en">{{ 'nav.english' | translate }}</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
   </mat-toolbar>
 
   <main class="shell__content">

@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Hero } from '../../models/hero.model';
 import { SuperheroApiService } from '../../services/superhero-api.service';
+import { provideTestTranslate } from '../../../../../testing/translate-testing';
 import { HeroDialogComponent } from './hero-dialog-component';
 
 describe('HeroDialogComponent', () => {
@@ -34,6 +35,7 @@ describe('HeroDialogComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HeroDialogComponent, NoopAnimationsModule],
       providers: [
+        provideTestTranslate(),
         { provide: MatDialogRef, useValue: dialogRefMock },
         { provide: MAT_DIALOG_DATA, useValue: data },
         { provide: SuperheroApiService, useValue: superheroApiServiceMock },

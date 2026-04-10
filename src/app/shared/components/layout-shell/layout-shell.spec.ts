@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import { provideTestTranslate } from '../../../../testing/translate-testing';
 import { LayoutShell } from './layout-shell';
 
 @Component({
@@ -21,6 +22,7 @@ describe('LayoutShell', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HostComponent],
+      providers: [provideTestTranslate()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HostComponent);

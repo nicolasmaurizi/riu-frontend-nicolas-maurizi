@@ -1,0 +1,96 @@
+{
+  "nav": {
+    "title": "Explorador de Héroes",
+    "language": "Idioma",
+    "spanish": "ES",
+    "english": "EN"
+  },
+  "common": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "create": "Crear",
+    "close": "Cerrar"
+  },
+  "heroes": {
+    "title": "Explora héroes icónicos",
+    "subtitle": "Una vista paginada para validar estructura, acciones y componentes base.",
+    "sectionTitle": "Todos los héroes",
+    "sectionCopy": "Datos de ejemplo",
+    "searchLabel": "Buscar héroes",
+    "searchPlaceholder": "Spider-Man, Batman...",
+    "image": "Imagen",
+    "name": "Nombre",
+    "publisher": "Editorial",
+    "alignment": "Alineación",
+    "power": "Poder",
+    "intelligence": "Inteligencia",
+    "actions": "Acciones",
+    "empty": "No se encontraron héroes",
+    "emptyAlt": "No se encontraron héroes",
+    "pagination": "Paginación de héroes",
+    "actionsLabel": {
+      "add": "Agregar héroe",
+      "edit": "Editar héroe",
+      "delete": "Eliminar héroe"
+    },
+    "publisherValues": {
+      "marvel": "Marvel",
+      "dc": "DC",
+      "other": "Otro"
+    },
+    "alignmentValues": {
+      "hero": "Héroe",
+      "antiHero": "Anti-Héroe",
+      "neutral": "Neutral"
+    },
+    "notifications": {
+      "created": "Héroe creado correctamente",
+      "updated": "Héroe actualizado correctamente",
+      "deleted": "Héroe eliminado correctamente",
+      "createError": "No se pudo crear el héroe",
+      "updateError": "No se pudo actualizar el héroe",
+      "deleteError": "No se pudo eliminar el héroe",
+      "duplicateName": "El nombre del héroe ya existe"
+    }
+  },
+  "form": {
+    "addTitle": "Agregar héroe",
+    "editTitle": "Editar héroe",
+    "name": "Nombre",
+    "alias": "Alter ego",
+    "publisher": "Editorial",
+    "alignment": "Alineación",
+    "imageUrl": "URL de imagen",
+    "powerLevel": "Nivel de poder",
+    "derivedSpeed": "Velocidad derivada",
+    "intelligence": "Inteligencia",
+    "previewPlaceholder": "La vista previa de imagen aparecerá aquí",
+    "errors": {
+      "nameRequired": "El nombre es obligatorio.",
+      "publisherRequired": "La editorial es obligatoria.",
+      "alignmentRequired": "La alineación es obligatoria.",
+      "imageUrlRequired": "La URL de imagen es obligatoria.",
+      "powerMin": "El nivel de poder debe ser al menos 10.",
+      "intelligenceMin": "La inteligencia debe ser al menos 10."
+    }
+  },
+  "dialog": {
+    "deleteHeroTitle": "Eliminar héroe",
+    "deleteHeroMessage": "¿Seguro que querés eliminar a {{name}}? Esta acción no se puede deshacer.",
+    "delete": "Eliminar"
+  },
+  "loading": {
+    "message": "Cargando..."
+  },
+  "imageSearch": {
+    "searching": "Buscando imagen...",
+    "found": "Imagen encontrada automáticamente.",
+    "error": "No se pudo buscar la imagen automáticamente."
+  },
+  "heroList": {
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "empty": "No se encontraron héroes"
+  }
+}

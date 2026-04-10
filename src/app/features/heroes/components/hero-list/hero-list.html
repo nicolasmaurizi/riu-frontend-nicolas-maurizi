@@ -13,14 +13,14 @@
         </div>
 
         <div class="hero-list__actions">
-          <button type="button" data-testid="edit-button" (click)="onEdit(hero)">Editar</button>
+          <button type="button" data-testid="edit-button" (click)="onEdit(hero)">{{ 'heroList.edit' | translate }}</button>
           <button type="button" data-testid="delete-button" (click)="onDelete(hero)">
-            Eliminar
+            {{ 'heroList.delete' | translate }}
           </button>
         </div>
       </article>
     }
   </div>
 } @else {
-  <p class="hero-list__empty" data-testid="empty-state">No heroes found</p>
+  <p class="hero-list__empty" data-testid="empty-state">{{ 'heroList.empty' | translate }}</p>
 }

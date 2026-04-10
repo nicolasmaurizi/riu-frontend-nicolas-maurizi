@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { provideTestTranslate } from '../../../../testing/translate-testing';
 import { LoadingOverlay } from './loading-overlay';
 
 describe('LoadingOverlay', () => {
@@ -9,6 +10,7 @@ describe('LoadingOverlay', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LoadingOverlay],
+      providers: [provideTestTranslate()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoadingOverlay);

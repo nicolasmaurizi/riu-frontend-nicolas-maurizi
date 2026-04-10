@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { Hero } from '../../models/hero.model';
 
 @Component({
   selector: 'app-hero-list',
   standalone: true,
-  imports: [],
+  imports: [TranslatePipe],
   templateUrl: './hero-list.html',
   styleUrl: './hero-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

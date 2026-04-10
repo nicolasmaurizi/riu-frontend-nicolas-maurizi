@@ -1,17 +1,15 @@
 <section class="heroes-home">
   <header class="heroes-home__header">
     <div class="heroes-home__intro">
-      <h1 class="heroes-home__title">Explore iconic heroes</h1>
-      <p class="heroes-home__subtitle">
-        Una vista inicial paginada para validar estructura, acciones y componentes base.
-      </p>
+      <h1 class="heroes-home__title">{{ 'heroes.title' | translate }}</h1>
+      <p class="heroes-home__subtitle">{{ 'heroes.subtitle' | translate }}</p>
     </div>
 
     <mat-form-field class="heroes-home__search" appearance="outline">
-      <mat-label>Search heroes</mat-label>
+      <mat-label>{{ 'heroes.searchLabel' | translate }}</mat-label>
       <input
         matInput
-        placeholder="Spider-Man, Batman..."
+        [placeholder]="'heroes.searchPlaceholder' | translate"
         [value]="searchTerm()"
         (input)="onSearchChange($any($event.target).value)"
       />
@@ -22,17 +20,17 @@
   <section class="heroes-home__table-card">
     <div class="heroes-home__table-header">
       <div>
-        <h2 class="heroes-home__section-title">All Heroes</h2>
-        <p class="heroes-home__section-copy">Listado mock usando `INITIAL_HEROES` como fuente.</p>
+        <h2 class="heroes-home__section-title">{{ 'heroes.sectionTitle' | translate }}</h2>
+        <p class="heroes-home__section-copy">{{ 'heroes.sectionCopy' | translate }}</p>
       </div>
 
       <button
         mat-icon-button
         type="button"
         (click)="onAddHero()"
-        matTooltip="Add hero"
+        [matTooltip]="'heroes.actionsLabel.add' | translate"
         matTooltipPosition="above"
-        aria-label="Add hero"
+        [attr.aria-label]="'heroes.actionsLabel.add' | translate"
         color="primary"
       >
         <mat-icon>add</mat-icon>
@@ -43,14 +41,14 @@
       <div class="heroes-home__table-wrap">
         <table mat-table [dataSource]="pagedHeroes()" class="heroes-home__table">
           <ng-container matColumnDef="image">
-            <th mat-header-cell *matHeaderCellDef>Image</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'heroes.image' | translate }}</th>
             <td mat-cell *matCellDef="let hero">
               <img class="heroes-home__avatar" [src]="hero.imageUrl" [alt]="hero.name" />
             </td>
           </ng-container>
 
           <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'heroes.name' | translate }}</th>
             <td mat-cell *matCellDef="let hero">
               <div class="heroes-home__name-cell">
                 <span class="heroes-home__name">{{ hero.alias || hero.name }}</span>
@@ -62,17 +60,17 @@
           </ng-container>
 
           <ng-container matColumnDef="publisher">
-            <th mat-header-cell *matHeaderCellDef>Publisher</th>
-            <td mat-cell *matCellDef="let hero">{{ hero.publisher }}</td>
+            <th mat-header-cell *matHeaderCellDef>{{ 'heroes.publisher' | translate }}</th>
+            <td mat-cell *matCellDef="let hero">{{ getUniverseLabelKey(hero.universe) | translate }}</td>
           </ng-container>
 
           <ng-container matColumnDef="alignment">
-            <th mat-header-cell *matHeaderCellDef>Alignment</th>
-            <td mat-cell *matCellDef="let hero">{{ hero.alignment }}</td>
+            <th mat-header-cell *matHeaderCellDef>{{ 'heroes.alignment' | translate }}</th>
+            <td mat-cell *matCellDef="let hero">{{ getAlignmentLabelKey(hero.alignment) | translate }}</td>
           </ng-container>
 
           <ng-container matColumnDef="power">
-            <th mat-header-cell *matHeaderCellDef>Power</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'heroes.power' | translate }}</th>
             <td mat-cell *matCellDef="let hero">
               <div class="heroes-home__power" [class]="'heroes-home__power heroes-home__power--' + getPowerTone(hero.powerLevel)">
                 <div class="heroes-home__power-meta">
@@ -89,7 +87,7 @@
           </ng-container>
 
           <ng-container matColumnDef="intelligence">
-            <th mat-header-cell *matHeaderCellDef>Intelligence</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'heroes.intelligence' | translate }}</th>
             <td mat-cell *matCellDef="let hero">
               <div
                 class="heroes-home__power"
@@ -109,16 +107,16 @@
           </ng-container>
 
           <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef class="heroes-home__actions-column">Actions</th>
+            <th mat-header-cell *matHeaderCellDef class="heroes-home__actions-column">{{ 'heroes.actions' | translate }}</th>
             <td mat-cell *matCellDef="let hero" class="heroes-home__actions-column">
               <div class="heroes-home__actions">
                 <button
                   mat-icon-button
                   type="button"
                   (click)="onEditHero(hero)"
-                  matTooltip="Edit hero"
+                  [matTooltip]="'heroes.actionsLabel.edit' | translate"
                   matTooltipPosition="above"
-                  aria-label="Edit hero"
+                  [attr.aria-label]="'heroes.actionsLabel.edit' | translate"
                 >
                   <mat-icon>edit</mat-icon>
                 </button>
@@ -126,9 +124,9 @@
                   mat-icon-button
                   type="button"
                   (click)="onDeleteHero(hero)"
-                  matTooltip="Delete hero"
+                  [matTooltip]="'heroes.actionsLabel.delete' | translate"
                   matTooltipPosition="above"
-                  aria-label="Delete hero"
+                  [attr.aria-label]="'heroes.actionsLabel.delete' | translate"
                   color="warn"
                 >
                   <mat-icon>delete</mat-icon>
@@ -148,7 +146,7 @@
         [pageSize]="pageSize()"
         [pageSizeOptions]="pageSizeOptions"
         (page)="onPageChange($event)"
-        aria-label="Heroes pagination"
+        [attr.aria-label]="'heroes.pagination' | translate"
       />
     } @else {
       <div class="heroes-home__empty-state">
@@ -156,9 +154,9 @@
           <img
             class="heroes-home__empty-image"
             src="images/empty-state-heroes.webp"
-            alt="No heroes found"
+            [attr.alt]="'heroes.emptyAlt' | translate"
           />
-          <p class="heroes-home__empty-copy">No heroes found</p>
+          <p class="heroes-home__empty-copy">{{ 'heroes.empty' | translate }}</p>
         </div>
       </div>
     }

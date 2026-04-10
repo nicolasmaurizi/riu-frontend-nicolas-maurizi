@@ -1,49 +1,49 @@
-<h2 mat-dialog-title>{{ dialogTitle() }}</h2>
+<h2 mat-dialog-title>{{ dialogTitle() | translate }}</h2>
 
 <mat-dialog-content>
   <form class="add-hero-dialog__form" [formGroup]="form">
     <mat-form-field appearance="outline">
-      <mat-label>Name</mat-label>
+      <mat-label>{{ 'form.name' | translate }}</mat-label>
       <input matInput formControlName="name" appUppercase />
       @if (form.controls.name.touched && form.controls.name.hasError('required')) {
-        <mat-error>Name is required.</mat-error>
+        <mat-error>{{ 'form.errors.nameRequired' | translate }}</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Alter ego</mat-label>
+      <mat-label>{{ 'form.alias' | translate }}</mat-label>
       <input matInput formControlName="alias" />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Publisher</mat-label>
+      <mat-label>{{ 'form.publisher' | translate }}</mat-label>
       <mat-select formControlName="universe">
         @for (publisher of publishers; track publisher) {
-          <mat-option [value]="publisher">{{ publisher }}</mat-option>
+          <mat-option [value]="publisher">{{ getUniverseLabelKey(publisher) | translate }}</mat-option>
         }
       </mat-select>
       @if (form.controls.universe.touched && form.controls.universe.hasError('required')) {
-        <mat-error>Publisher is required.</mat-error>
+        <mat-error>{{ 'form.errors.publisherRequired' | translate }}</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Alignment</mat-label>
+      <mat-label>{{ 'form.alignment' | translate }}</mat-label>
       <mat-select formControlName="alignment">
         @for (alignment of alignments; track alignment) {
-          <mat-option [value]="alignment">{{ alignment }}</mat-option>
+          <mat-option [value]="alignment">{{ getAlignmentLabelKey(alignment) | translate }}</mat-option>
         }
       </mat-select>
       @if (form.controls.alignment.touched && form.controls.alignment.hasError('required')) {
-        <mat-error>Alignment is required.</mat-error>
+        <mat-error>{{ 'form.errors.alignmentRequired' | translate }}</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="add-hero-dialog__full-width">
-      <mat-label>Image URL</mat-label>
+      <mat-label>{{ 'form.imageUrl' | translate }}</mat-label>
       <input matInput formControlName="imageUrl" />
       @if (form.controls.imageUrl.touched && form.controls.imageUrl.hasError('required')) {
-        <mat-error>Image URL is required.</mat-error>
+        <mat-error>{{ 'form.errors.imageUrlRequired' | translate }}</mat-error>
       }
     </mat-form-field>
 
@@ -51,12 +51,12 @@
       @if (isSearchingImage()) {
         <div class="add-hero-dialog__image-search-message" role="status" aria-live="polite">
           <mat-spinner diameter="18" strokeWidth="3" />
-          <span>Searching image...</span>
+          <span>{{ 'imageSearch.searching' | translate }}</span>
         </div>
       } @else if (imageSearchError()) {
-        <p class="add-hero-dialog__error">{{ imageSearchError() }}</p>
+        <p class="add-hero-dialog__error">{{ imageSearchError() | translate }}</p>
       } @else if (imageFound()) {
-        <p class="add-hero-dialog__hint">Image found automatically.</p>
+        <p class="add-hero-dialog__hint">{{ 'imageSearch.found' | translate }}</p>
       }
     </div>
 
@@ -69,7 +69,7 @@
         />
       } @else {
         <div class="add-hero-dialog__preview-placeholder">
-          Image preview will appear here
+          {{ 'form.previewPlaceholder' | translate }}
         </div>
       }
     </section>
@@ -77,11 +77,11 @@
     <section class="add-hero-dialog__full-width add-hero-dialog__stats">
       <div class="add-hero-dialog__stats-header">
         <div>
-          <p class="add-hero-dialog__stats-label">Power level</p>
+          <p class="add-hero-dialog__stats-label">{{ 'form.powerLevel' | translate }}</p>
           <strong class="add-hero-dialog__stats-value">{{ form.controls.powerLevel.value }}</strong>
         </div>
         <div class="add-hero-dialog__derived">
-          <span class="add-hero-dialog__stats-label">Derived speed</span>
+          <span class="add-hero-dialog__stats-label">{{ 'form.derivedSpeed' | translate }}</span>
           <strong class="add-hero-dialog__stats-value">{{ derivedSpeed() }}</strong>
         </div>
       </div>
@@ -91,14 +91,14 @@
       </mat-slider>
 
       @if (form.controls.powerLevel.touched && form.controls.powerLevel.hasError('min')) {
-        <p class="add-hero-dialog__error">Power level must be at least 10.</p>
+        <p class="add-hero-dialog__error">{{ 'form.errors.powerMin' | translate }}</p>
       }
     </section>
 
     <section class="add-hero-dialog__full-width add-hero-dialog__stats">
       <div class="add-hero-dialog__stats-header">
         <div>
-          <p class="add-hero-dialog__stats-label">Intelligence</p>
+          <p class="add-hero-dialog__stats-label">{{ 'form.intelligence' | translate }}</p>
           <strong class="add-hero-dialog__stats-value">{{ intelligenceScore() }}</strong>
         </div>
       </div>
@@ -108,13 +108,13 @@
       </mat-slider>
 
       @if (form.controls.intelligence.touched && form.controls.intelligence.hasError('min')) {
-        <p class="add-hero-dialog__error">Intelligence must be at least 10.</p>
+        <p class="add-hero-dialog__error">{{ 'form.errors.intelligenceMin' | translate }}</p>
       }
     </section>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button type="button" (click)="close()">Cancel</button>
-  <button mat-flat-button type="button" (click)="save()">{{ submitText() }}</button>
+  <button mat-button type="button" (click)="close()">{{ 'common.cancel' | translate }}</button>
+  <button mat-flat-button type="button" (click)="save()">{{ submitText() | translate }}</button>
 </mat-dialog-actions>

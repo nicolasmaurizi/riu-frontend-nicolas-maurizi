@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Hero } from '../../models/hero.model';
+import { provideTestTranslate } from '../../../../../testing/translate-testing';
 import { HeroList } from './hero-list';
 
 describe('HeroList', () => {
@@ -40,6 +41,7 @@ describe('HeroList', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HeroList],
+      providers: [provideTestTranslate()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeroList);

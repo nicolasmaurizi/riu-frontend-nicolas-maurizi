@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { provideTestTranslate } from '../../../../testing/translate-testing';
 import { ConfirmDialog } from './confirm-dialog';
 
 describe('ConfirmDialog', () => {
@@ -17,6 +18,7 @@ describe('ConfirmDialog', () => {
     await TestBed.configureTestingModule({
       imports: [ConfirmDialog],
       providers: [
+        provideTestTranslate(),
         { provide: MatDialogRef, useValue: dialogRefMock },
         {
           provide: MAT_DIALOG_DATA,
