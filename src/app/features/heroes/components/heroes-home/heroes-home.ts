@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, ViewChild } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,7 +10,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { MatPaginator } from '@angular/material/paginator';
 import { NotificationService } from '../../../../core/services/notification';
 import {
   ConfirmDialog,
@@ -44,6 +44,8 @@ interface HeroRow extends Hero {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeroesHome {
+  @ViewChild(MatPaginator) paginator?: MatPaginator;
+
   private readonly dialog = inject(MatDialog);
   private readonly heroesService = inject(HeroesService);
   private readonly notification = inject(NotificationService);
@@ -83,6 +85,10 @@ export class HeroesHome {
   onSearchChange(value: string): void {
     this.searchTerm.set(value);
     this.pageIndex.set(0);
+
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
   }
 
   onPageChange(event: PageEvent): void {
