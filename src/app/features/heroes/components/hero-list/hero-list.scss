@@ -1,0 +1,62 @@
+:host {
+  display: block;
+}
+
+.hero-list {
+  display: grid;
+  gap: 12px;
+}
+
+.hero-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid rgba(23, 32, 51, 0.08);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.hero-list__image {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #d7dce5;
+}
+
+.hero-list__content {
+  min-width: 0;
+  flex: 1;
+}
+
+.hero-list__name {
+  margin: 0;
+  color: #172033;
+  font-size: 1rem;
+}
+
+.hero-list__alias {
+  margin: 4px 0 0;
+  color: #6b7486;
+  font-size: 0.875rem;
+}
+
+.hero-list__universe {
+  margin: 4px 0 0;
+  color: #586277;
+  font-size: 0.875rem;
+}
+
+.hero-list__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.hero-list__empty {
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+  color: #586277;
+}

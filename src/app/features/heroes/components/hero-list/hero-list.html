@@ -1,1 +1,26 @@
-<p>hero-list works!</p>
+@if (heroes.length > 0) {
+  <div class="hero-list">
+    @for (hero of heroes; track hero.id) {
+      <article class="hero-list__item" data-testid="hero-card">
+        <img class="hero-list__image" [src]="hero.imageUrl" [alt]="hero.name" />
+
+        <div class="hero-list__content">
+          <h3 class="hero-list__name">{{ hero.name }}</h3>
+          @if (hero.alias) {
+            <p class="hero-list__alias">{{ hero.alias }}</p>
+          }
+          <p class="hero-list__universe">{{ hero.universe }}</p>
+        </div>
+
+        <div class="hero-list__actions">
+          <button type="button" data-testid="edit-button" (click)="onEdit(hero)">Editar</button>
+          <button type="button" data-testid="delete-button" (click)="onDelete(hero)">
+            Eliminar
+          </button>
+        </div>
+      </article>
+    }
+  </div>
+} @else {
+  <p class="hero-list__empty" data-testid="empty-state">No heroes found</p>
+}
