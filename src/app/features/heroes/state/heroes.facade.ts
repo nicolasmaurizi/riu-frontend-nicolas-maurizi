@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 
 import { HeroFormValue } from '../models/hero-form.model';
 import { Hero } from '../models/hero.model';
@@ -8,11 +8,13 @@ import { HeroesService } from '../services/heroes.service';
   providedIn: 'root',
 })
 export class HeroesFacade {
+  private readonly heroesService = inject(HeroesService);
+
   readonly filter = signal('');
   readonly page = signal(1);
   readonly pageSize = signal(5);
 
-  readonly heroes = computed(() => this.heroesService.getAll());
+  readonly heroes = this.heroesService.heroes;
 
   readonly filteredHeroes = computed(() => {
     const term = this.filter().trim();
@@ -29,8 +31,6 @@ export class HeroesFacade {
   });
 
   readonly totalHeroes = computed(() => this.filteredHeroes().length);
-
-  constructor(private readonly heroesService: HeroesService) {}
 
   setFilter(value: string): void {
     this.filter.set(value);

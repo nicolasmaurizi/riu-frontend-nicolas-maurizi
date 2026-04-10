@@ -102,21 +102,11 @@ export class HeroesService {
     this.ensureUniqueHeroName(payload.name);
 
     const timestamp = new Date().toISOString();
-    const powerLevel = payload.powerLevel ?? 0;
-
-    const hero: Hero = {
+    const hero = this.buildHeroFromPayload(payload, {
       id: this.nextId++,
-      name: payload.name.trim(),
-      alias: payload.alias?.trim() || undefined,
-      imageUrl: payload.imageUrl.trim(),
-      universe: payload.universe,
-      alignment: payload.alignment,
-      powerLevel,
-      speed: this.calculateSpeedFromPowerLevel(powerLevel),
-      intelligence: payload.intelligence ?? 10,
       createdAt: timestamp,
       updatedAt: timestamp,
-    };
+    });
 
     this.heroesState.update((heroes) => {
       const updatedHeroes = [hero, ...heroes];
@@ -135,21 +125,10 @@ export class HeroesService {
     }
 
     this.ensureUniqueHeroName(payload.name, id);
-
-    const powerLevel = payload.powerLevel ?? 0;
-
-    const updatedHero: Hero = {
+    const updatedHero = this.buildHeroFromPayload(payload, {
       ...currentHero,
-      name: payload.name.trim(),
-      alias: payload.alias?.trim() || undefined,
-      imageUrl: payload.imageUrl.trim(),
-      universe: payload.universe,
-      alignment: payload.alignment,
-      powerLevel,
-      speed: this.calculateSpeedFromPowerLevel(powerLevel),
-      intelligence: payload.intelligence ?? 10,
       updatedAt: new Date().toISOString(),
-    };
+    });
 
     this.heroesState.update((heroes) => {
       const updatedHeroes = heroes.map((hero) => (hero.id === id ? updatedHero : hero));
@@ -189,6 +168,28 @@ export class HeroesService {
 
   private calculateSpeedFromPowerLevel(powerLevel: number): number {
     return Math.round(powerLevel * 0.85);
+  }
+
+  private buildHeroFromPayload(
+    payload: HeroFormValue,
+    baseHero: Pick<Hero, 'id' | 'createdAt' | 'updatedAt'> & Partial<Hero>,
+  ): Hero {
+    const powerLevel = payload.powerLevel ?? 0;
+
+    return {
+      ...baseHero,
+      id: baseHero.id,
+      name: payload.name.trim(),
+      alias: payload.alias?.trim() || undefined,
+      imageUrl: payload.imageUrl.trim(),
+      universe: payload.universe,
+      alignment: payload.alignment,
+      powerLevel,
+      speed: this.calculateSpeedFromPowerLevel(powerLevel),
+      intelligence: payload.intelligence ?? 10,
+      createdAt: baseHero.createdAt,
+      updatedAt: baseHero.updatedAt,
+    };
   }
 
   private ensureUniqueHeroName(name: string, currentHeroId?: number): void {

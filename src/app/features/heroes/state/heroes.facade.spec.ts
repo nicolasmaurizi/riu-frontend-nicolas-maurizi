@@ -1,7 +1,10 @@
+import { TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { HeroFormValue } from '../models/hero-form.model';
 import { Hero } from '../models/hero.model';
+import { HeroesService } from '../services/heroes.service';
 import { HeroesFacade } from './heroes.facade';
 
 describe('HeroesFacade', () => {
@@ -47,6 +50,7 @@ describe('HeroesFacade', () => {
   ];
 
   const heroesServiceMock = {
+    heroes: signal(heroes).asReadonly(),
     getAll: vi.fn(() => heroes),
     searchByName: vi.fn((term: string) =>
       heroes.filter((hero) => hero.name.toLowerCase().includes(term.toLowerCase())),
@@ -68,7 +72,10 @@ describe('HeroesFacade', () => {
     heroesServiceMock.create.mockClear();
     heroesServiceMock.update.mockClear();
     heroesServiceMock.delete.mockClear();
-    facade = new HeroesFacade(heroesServiceMock as never);
+    TestBed.configureTestingModule({
+      providers: [{ provide: HeroesService, useValue: heroesServiceMock }],
+    });
+    facade = TestBed.inject(HeroesFacade);
   });
 
   it('should return paged heroes from the service', () => {
