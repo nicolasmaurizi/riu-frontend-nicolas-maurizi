@@ -16,7 +16,7 @@ import {
   ConfirmDialog,
   ConfirmDialogData,
 } from '../../../../shared/components/confirm-dialog/confirm-dialog';
-import { AddHeroDialog, HeroDialogData } from '../add-hero-dialog/add-hero-dialog';
+import { HeroDialogComponent } from '../hero-dialog-component/hero-dialog-component';
 import { HeroFormValue } from '../../models/hero-form.model';
 import { Hero } from '../../models/hero.model';
 import { DuplicateHeroNameError, HeroesService } from '../../services/heroes.service';
@@ -97,14 +97,11 @@ export class HeroesHome {
   }
 
   onAddHero(): void {
-    const dialogData: HeroDialogData = { mode: 'create' };
-
     this.dialog
-      .open(AddHeroDialog, {
+      .open(HeroDialogComponent, {
         width: '640px',
         maxWidth: 'calc(100vw - 32px)',
         autoFocus: false,
-        data: dialogData,
       })
       .afterClosed()
       .subscribe((payload: HeroFormValue | undefined) => {
@@ -128,17 +125,12 @@ export class HeroesHome {
   }
 
   onEditHero(hero: HeroRow): void {
-    const dialogData: HeroDialogData = {
-      mode: 'edit',
-      hero,
-    };
-
     this.dialog
-      .open(AddHeroDialog, {
+      .open(HeroDialogComponent, {
         width: '640px',
         maxWidth: 'calc(100vw - 32px)',
         autoFocus: false,
-        data: dialogData,
+        data: hero,
       })
       .afterClosed()
       .subscribe((payload: HeroFormValue | undefined) => {

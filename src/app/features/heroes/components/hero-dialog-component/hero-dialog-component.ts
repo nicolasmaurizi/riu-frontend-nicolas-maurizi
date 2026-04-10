@@ -13,13 +13,8 @@ import { HeroFormValue } from '../../models/hero-form.model';
 import { Hero, HeroAlignment, HeroUniverse } from '../../models/hero.model';
 import { UppercaseDirective } from '../../../../shared/directives/uppercase.directive';
 
-export interface HeroDialogData {
-  mode: 'create' | 'edit';
-  hero?: Hero;
-}
-
 @Component({
-  selector: 'app-add-hero-dialog',
+  selector: 'app-hero-dialog-component',
   standalone: true,
   imports: [
     MatButtonModule,
@@ -31,14 +26,15 @@ export interface HeroDialogData {
     ReactiveFormsModule,
     UppercaseDirective,
   ],
-  templateUrl: './add-hero-dialog.html',
-  styleUrl: './add-hero-dialog.scss',
+  templateUrl: './hero-dialog-component.html',
+  styleUrl: './hero-dialog-component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddHeroDialog {
+export class HeroDialogComponent {
   private readonly formBuilder = inject(FormBuilder);
-  private readonly dialogRef = inject(MatDialogRef<AddHeroDialog, HeroFormValue>);
-  readonly data = inject<HeroDialogData>(MAT_DIALOG_DATA, { optional: true });
+  private readonly dialogRef = inject(MatDialogRef<HeroDialogComponent, HeroFormValue>);
+  readonly data = inject<Hero | undefined>(MAT_DIALOG_DATA, { optional: true });
+  readonly isEditMode = !!this.data;
 
   readonly publishers: HeroUniverse[] = ['Marvel', 'DC', 'Otro'];
   readonly alignments: HeroAlignment[] = ['Hero', 'Anti-Hero', 'Neutral'];
@@ -56,13 +52,12 @@ export class AddHeroDialog {
     initialValue: this.form.controls.powerLevel.getRawValue(),
   });
 
-  readonly isEditMode = computed(() => this.data?.mode === 'edit');
-  readonly dialogTitle = computed(() => (this.isEditMode() ? 'Edit Hero' : 'Add Hero'));
-  readonly submitText = computed(() => (this.isEditMode() ? 'Save' : 'Create'));
+  readonly dialogTitle = computed(() => (this.isEditMode ? 'Edit Hero' : 'Add Hero'));
+  readonly submitText = computed(() => (this.isEditMode ? 'Save' : 'Create'));
   readonly derivedSpeed = computed(() => this.calculateSpeed(this.powerLevelValue()));
 
   constructor() {
-    const hero = this.data?.hero;
+    const hero = this.data;
 
     if (!hero) {
       return;
