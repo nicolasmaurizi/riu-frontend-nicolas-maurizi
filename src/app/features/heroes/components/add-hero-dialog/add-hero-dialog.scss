@@ -1,0 +1,74 @@
+:host {
+  display: block;
+}
+
+.add-hero-dialog__form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding-top: 8px;
+  min-width: min(560px, 100%);
+}
+
+.add-hero-dialog__full-width {
+  grid-column: 1 / -1;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.add-hero-dialog__stats {
+  display: grid;
+  gap: 12px;
+  padding: 4px 0 8px;
+}
+
+.add-hero-dialog__stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.add-hero-dialog__stats-label {
+  display: block;
+  margin: 0 0 4px;
+  color: #667085;
+  font-size: 0.875rem;
+}
+
+.add-hero-dialog__stats-value {
+  color: #172033;
+  font-size: 1.125rem;
+}
+
+.add-hero-dialog__derived {
+  text-align: right;
+}
+
+.add-hero-dialog__error {
+  margin: 0;
+  color: #b3261e;
+  font-size: 0.875rem;
+}
+
+mat-slider {
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .add-hero-dialog__form {
+    grid-template-columns: 1fr;
+    min-width: 0;
+  }
+
+  .add-hero-dialog__stats-header {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .add-hero-dialog__derived {
+    text-align: left;
+  }
+}

@@ -1,0 +1,76 @@
+<h2 mat-dialog-title>{{ dialogTitle() }}</h2>
+
+<mat-dialog-content>
+  <form class="add-hero-dialog__form" [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" appUppercase />
+      @if (form.controls.name.touched && form.controls.name.hasError('required')) {
+        <mat-error>Name is required.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Alter ego</mat-label>
+      <input matInput formControlName="alias" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Publisher</mat-label>
+      <mat-select formControlName="universe">
+        @for (publisher of publishers; track publisher) {
+          <mat-option [value]="publisher">{{ publisher }}</mat-option>
+        }
+      </mat-select>
+      @if (form.controls.universe.touched && form.controls.universe.hasError('required')) {
+        <mat-error>Publisher is required.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Alignment</mat-label>
+      <mat-select formControlName="alignment">
+        @for (alignment of alignments; track alignment) {
+          <mat-option [value]="alignment">{{ alignment }}</mat-option>
+        }
+      </mat-select>
+      @if (form.controls.alignment.touched && form.controls.alignment.hasError('required')) {
+        <mat-error>Alignment is required.</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="add-hero-dialog__full-width">
+      <mat-label>Image URL</mat-label>
+      <input matInput formControlName="imageUrl" />
+      @if (form.controls.imageUrl.touched && form.controls.imageUrl.hasError('required')) {
+        <mat-error>Image URL is required.</mat-error>
+      }
+    </mat-form-field>
+
+    <section class="add-hero-dialog__full-width add-hero-dialog__stats">
+      <div class="add-hero-dialog__stats-header">
+        <div>
+          <p class="add-hero-dialog__stats-label">Power level</p>
+          <strong class="add-hero-dialog__stats-value">{{ form.controls.powerLevel.value }}</strong>
+        </div>
+        <div class="add-hero-dialog__derived">
+          <span class="add-hero-dialog__stats-label">Derived speed</span>
+          <strong class="add-hero-dialog__stats-value">{{ derivedSpeed() }}</strong>
+        </div>
+      </div>
+
+      <mat-slider min="10" max="100" step="1" discrete>
+        <input matSliderThumb formControlName="powerLevel" />
+      </mat-slider>
+
+      @if (form.controls.powerLevel.touched && form.controls.powerLevel.hasError('min')) {
+        <p class="add-hero-dialog__error">Power level must be at least 10.</p>
+      }
+    </section>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="close()">Cancel</button>
+  <button mat-flat-button type="button" (click)="save()">{{ submitText() }}</button>
+</mat-dialog-actions>
