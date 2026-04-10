@@ -195,7 +195,7 @@ describe('HeroesPage', () => {
   });
 
   it('debe ejecutar borrado al confirmar eliminacion', async () => {
-    heroesServiceMock.delete.mockReturnValue(true);
+    const deleteSpy = vi.spyOn(heroesServiceMock, 'delete').mockReturnValue(true);
     matDialogMock.open.mockReturnValue({
       afterClosed: () => of(true),
     });
@@ -214,7 +214,7 @@ describe('HeroesPage', () => {
         data: expect.objectContaining({ title: 'Delete hero' }),
       }),
     );
-    expect(heroesServiceMock.delete).toHaveBeenCalledWith(1);
+    expect(deleteSpy).toHaveBeenCalledWith(1);
     expect(notificationServiceMock.success).toHaveBeenCalledWith('Hero deleted successfully');
   });
 

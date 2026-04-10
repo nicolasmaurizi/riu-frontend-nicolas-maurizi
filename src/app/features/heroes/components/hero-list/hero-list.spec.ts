@@ -68,14 +68,13 @@ describe('HeroList', () => {
 
   it('should emit edit event when edit button is clicked', () => {
     component.heroes = mockHeroes;
-    const editSpy = vi.fn();
-    component.edit.subscribe(editSpy);
+    const editEmitSpy = vi.spyOn(component.edit, 'emit');
     fixture.detectChanges();
 
     const editButtons = fixture.nativeElement.querySelectorAll('[data-testid="edit-button"]');
     (editButtons[0] as HTMLButtonElement).click();
 
-    expect(editSpy).toHaveBeenCalledWith(mockHeroes[0]);
+    expect(editEmitSpy).toHaveBeenCalledWith(mockHeroes[0]);
   });
 
   it('should emit delete event when delete button is clicked', () => {

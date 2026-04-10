@@ -59,6 +59,12 @@ describe('HeroesService', () => {
     expect(result[0].name).toBe('Tony Stark');
   });
 
+  it('debe devolver todos los heroes cuando el termino de busqueda esta vacio', () => {
+    const result = service.searchByName('');
+
+    expect(result).toEqual(service.getAll());
+  });
+
   it('debe obtener un heroe por id', () => {
     const hero = service.getById(2);
 
@@ -112,6 +118,18 @@ describe('HeroesService', () => {
 
     expect(result).toBe(false);
     expect(service.getAll()).toHaveLength(INITIAL_HEROES.length);
+  });
+
+  it('debe persistir heroes en localStorage al crear un heroe', () => {
+    setItemSpy.mockClear();
+
+    const createdHero = service.create(createPayload());
+
+    expect(setItemSpy).toHaveBeenCalledTimes(1);
+    expect(setItemSpy).toHaveBeenCalledWith(
+      'heroes-app.heroes',
+      expect.stringContaining(`"id":${createdHero.id}`),
+    );
   });
 
   it('debe persistir cambios en localStorage al crear, actualizar y borrar', () => {
