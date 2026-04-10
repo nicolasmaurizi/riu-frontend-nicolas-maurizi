@@ -15,6 +15,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { HeroFormValue } from '../../models/hero-form.model';
 import { Hero, HeroAlignment, HeroUniverse } from '../../models/hero.model';
 import { SuperheroApiService } from '../../services/superhero-api.service';
+import { imageUrlValidator } from '../../validators/image-url.validator';
 import { UppercaseDirective } from '../../../../shared/directives/uppercase.directive';
 
 @Component({
@@ -56,7 +57,7 @@ export class HeroDialogComponent {
     alias: [''],
     universe: ['Marvel' as HeroUniverse, Validators.required],
     alignment: ['Hero' as HeroAlignment, Validators.required],
-    imageUrl: ['', Validators.required],
+    imageUrl: ['', [Validators.required, imageUrlValidator()]],
     powerLevel: [50, [Validators.required, Validators.min(10), Validators.max(100)]],
     intelligence: [50, [Validators.required, Validators.min(10), Validators.max(100)]],
   });

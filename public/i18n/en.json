@@ -71,6 +71,7 @@
       "publisherRequired": "Publisher is required.",
       "alignmentRequired": "Alignment is required.",
       "imageUrlRequired": "Image URL is required.",
+      "imageUrlInvalid": "Enter a valid image URL.",
       "powerMin": "Power level must be at least 10.",
       "intelligenceMin": "Intelligence must be at least 10."
     }

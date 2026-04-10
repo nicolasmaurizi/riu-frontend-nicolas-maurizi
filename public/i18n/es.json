@@ -71,6 +71,7 @@
       "publisherRequired": "La editorial es obligatoria.",
       "alignmentRequired": "La alineación es obligatoria.",
       "imageUrlRequired": "La URL de imagen es obligatoria.",
+      "imageUrlInvalid": "Ingresá una URL de imagen válida.",
       "powerMin": "El nivel de poder debe ser al menos 10.",
       "intelligenceMin": "La inteligencia debe ser al menos 10."
     }

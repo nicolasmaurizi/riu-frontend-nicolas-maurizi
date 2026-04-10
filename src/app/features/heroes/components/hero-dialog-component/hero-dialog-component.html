@@ -44,6 +44,8 @@
       <input matInput formControlName="imageUrl" />
       @if (form.controls.imageUrl.touched && form.controls.imageUrl.hasError('required')) {
         <mat-error>{{ 'form.errors.imageUrlRequired' | translate }}</mat-error>
+      } @else if (form.controls.imageUrl.touched && form.controls.imageUrl.hasError('imageUrlInvalid')) {
+        <mat-error>{{ 'form.errors.imageUrlInvalid' | translate }}</mat-error>
       }
     </mat-form-field>
 
