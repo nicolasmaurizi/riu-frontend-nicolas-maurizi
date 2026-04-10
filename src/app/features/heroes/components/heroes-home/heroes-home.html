@@ -28,15 +28,15 @@
       </div>
 
       <button
-        mat-flat-button
+        mat-icon-button
         type="button"
         (click)="onAddHero()"
         matTooltip="Add hero"
         matTooltipPosition="above"
         aria-label="Add hero"
+        color="primary"
       >
         <mat-icon>add</mat-icon>
-        Add
       </button>
     </div>
 
@@ -93,24 +93,25 @@
           <td mat-cell *matCellDef="let hero" class="heroes-home__actions-column">
             <div class="heroes-home__actions">
               <button
-                mat-stroked-button
+                mat-icon-button
                 type="button"
                 (click)="onEditHero(hero)"
                 matTooltip="Edit hero"
                 matTooltipPosition="above"
                 aria-label="Edit hero"
               >
-                Edit
+                <mat-icon>edit</mat-icon>
               </button>
               <button
-                mat-stroked-button
+                mat-icon-button
                 type="button"
                 (click)="onDeleteHero(hero)"
                 matTooltip="Delete hero"
                 matTooltipPosition="above"
                 aria-label="Delete hero"
+                color="warn"
               >
-                Delete
+                <mat-icon>delete</mat-icon>
               </button>
             </div>
           </td>
